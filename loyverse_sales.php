@@ -48,11 +48,16 @@ if (isset($data['receipts'])) {
     echo "<tr><th>Receipt Number</th><th>Date</th><th>Total Price</th><th>Items</th></tr>";
 
     foreach ($data['receipts'] as $receipt) {
-        $items = array_map(function($item) {
-            return $item['name'] . " (Qty: " . $item['quantity'] . ")";
-        }, $receipt['items']);
+        // Check if 'items' array exists and is not null
+        if (isset($receipt['items']) && is_array($receipt['items']) && count($receipt['items']) > 0) {
+            $items = array_map(function($item) {
+                return $item['name'] . " (Qty: " . $item['quantity'] . ")";
+            }, $receipt['items']);
 
-        $items_display = implode('<br>', $items);
+            $items_display = implode('<br>', $items);
+        } else {
+            $items_display = "No items found for this receipt.";
+        }
 
         echo "<tr>";
         echo "<td>{$receipt['number']}</td>";
