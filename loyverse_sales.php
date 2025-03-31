@@ -48,10 +48,17 @@ if (isset($data['receipts'])) {
     echo "<tr><th>Receipt Number</th><th>Date</th><th>Total Price</th><th>Items</th></tr>";
 
     foreach ($data['receipts'] as $receipt) {
-        // Check if 'items' array exists and is not null
+        $receipt_number = isset($receipt['number']) ? $receipt['number'] : 'N/A';
+        $created_at = isset($receipt['created_at']) ? $receipt['created_at'] : 'N/A';
+        $total_price = isset($receipt['total_price']) ? $receipt['total_price'] : '0.00';
+
+        // Check if 'items' array exists and is not empty
         if (isset($receipt['items']) && is_array($receipt['items']) && count($receipt['items']) > 0) {
             $items = array_map(function($item) {
-                return $item['name'] . " (Qty: " . $item['quantity'] . ")";
+                $item_name = isset($item['name']) ? $item['name'] : 'Unknown Item';
+                $quantity = isset($item['quantity']) ? $item['quantity'] : '0';
+                $price = isset($item['price']) ? $item['price'] : '0.00';
+                return "{$item_name} (Qty: {$quantity}, Price: {$price})";
             }, $receipt['items']);
 
             $items_display = implode('<br>', $items);
@@ -60,9 +67,9 @@ if (isset($data['receipts'])) {
         }
 
         echo "<tr>";
-        echo "<td>{$receipt['number']}</td>";
-        echo "<td>{$receipt['created_at']}</td>";
-        echo "<td>{$receipt['total_price']}</td>";
+        echo "<td>{$receipt_number}</td>";
+        echo "<td>{$created_at}</td>";
+        echo "<td>{$total_price}</td>";
         echo "<td>$items_display</td>";
         echo "</tr>";
     }
