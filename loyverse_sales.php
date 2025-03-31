@@ -42,6 +42,11 @@ curl_close($ch);
 // Decode the JSON response
 $data = json_decode($response, true);
 
+// Display raw response for debugging
+echo "<pre>";
+print_r($data);
+echo "</pre>";
+
 // Display the fetched data as a table
 if (isset($data['receipts'])) {
     echo "<table border='1'>";
