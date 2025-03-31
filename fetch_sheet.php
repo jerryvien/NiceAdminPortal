@@ -1,12 +1,9 @@
 <?php
-// Replace with your actual Google Sheet ID
-$sheetId = "YOUR_SHEET_ID";
-// Construct the CSV export URL
-$csvUrl = "https://docs.google.com/spreadsheets/d/$2PACX-1vTFubFRZzW6KtOochSHlAu4SW8McRa3L-1A1fFBNQkD_GASXWKGgbRiBKIWIgUrq8FSmxB-XVD9GhY7/export?format=csv&gid=0";
+// Your published Google Sheet CSV URL
+$csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFubFRZzW6KtOochSHlAu4SW8McRa3L-1A1fFBNQkD_GASXWKGgbRiBKIWIgUrq8FSmxB-XVD9GhY7/pub?output=csv";
 
 // Fetch the CSV content from the URL
 $csvContent = file_get_contents($csvUrl);
-
 if ($csvContent === false) {
     die("Error fetching data from the Google Sheet.");
 }
@@ -17,7 +14,7 @@ $data = [];
 
 // Parse each line of CSV into an array
 foreach ($lines as $line) {
-    // Skip empty lines
+    // Skip any empty lines
     if (trim($line) == "") continue;
     $data[] = str_getcsv($line);
 }
