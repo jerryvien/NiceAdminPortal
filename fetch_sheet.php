@@ -2,7 +2,7 @@
 // Replace with your actual Google Sheet ID
 $sheetId = "YOUR_SHEET_ID";
 // Construct the CSV export URL
-$csvUrl = "https://docs.google.com/spreadsheets/d/{$2PACX-1vTFubFRZzW6KtOochSHlAu4SW8McRa3L-1A1fFBNQkD_GASXWKGgbRiBKIWIgUrq8FSmxB-XVD9GhY7}/export?format=csv&gid=0";
+$csvUrl = "https://docs.google.com/spreadsheets/d/$2PACX-1vTFubFRZzW6KtOochSHlAu4SW8McRa3L-1A1fFBNQkD_GASXWKGgbRiBKIWIgUrq8FSmxB-XVD9GhY7/export?format=csv&gid=0";
 
 // Fetch the CSV content from the URL
 $csvContent = file_get_contents($csvUrl);
