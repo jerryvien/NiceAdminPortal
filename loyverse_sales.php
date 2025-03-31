@@ -50,13 +50,33 @@ echo "</pre>";
 // Display the fetched data as a table
 if (isset($data['receipts'])) {
     echo "<table border='1'>";
-    echo "<tr><th>Receipt ID</th><th>Receipt Number</th><th>Date</th><th>Total Price</th><th>Item Name</th><th>Category</th><th>SKU</th><th>Modifiers</th><th>Taxes</th><th>Discounts</th><th>Quantity</th><th>Item Price</th><th>Total Item Price</th></tr>";
+    echo "<tr>
+        <th>Receipt ID</th>
+        <th>Receipt Number</th>
+        <th>Date</th>
+        <th>Total Price</th>
+        <th>Item Name</th>
+        <th>Category</th>
+        <th>SKU</th>
+        <th>Modifiers</th>
+        <th>Taxes</th>
+        <th>Discounts</th>
+        <th>Quantity</th>
+        <th>Item Price</th>
+        <th>Total Item Price</th>
+        <th>Employee</th>
+        <th>Store</th>
+        <th>Customer</th>
+    </tr>";
 
     foreach ($data['receipts'] as $receipt) {
         $receipt_id = $receipt['id'] ?? 'N/A';
         $receipt_number = $receipt['number'] ?? 'N/A';
         $created_at = $receipt['created_at'] ?? 'N/A';
         $total_price = $receipt['total_price'] ?? '0.00';
+        $employee = $receipt['employee_name'] ?? 'N/A';
+        $store = $receipt['store_id'] ?? 'N/A';
+        $customer = $receipt['customer_name'] ?? 'N/A';
 
         if (isset($receipt['line_items']) && is_array($receipt['line_items'])) {
             foreach ($receipt['line_items'] as $item) {
@@ -77,12 +97,22 @@ if (isset($data['receipts'])) {
                 $modifiers_display = implode(', ', $modifiers) ?: 'None';
 
                 // Handle Taxes
-                $taxes = $item['taxes'] ?? [];
-                $tax_display = implode(', ', array_map(fn($tax) => $tax['name'], $taxes)) ?: 'None';
+                $taxes = [];
+                if (isset($item['taxes']) && is_array($item['taxes'])) {
+                    foreach ($item['taxes'] as $tax) {
+                        $taxes[] = $tax['name'] . ' (' . $tax['rate'] . '%)';
+                    }
+                }
+                $tax_display = implode(', ', $taxes) ?: 'None';
 
                 // Handle Discounts
-                $discounts = $item['discounts'] ?? [];
-                $discount_display = implode(', ', array_map(fn($discount) => $discount['name'], $discounts)) ?: 'None';
+                $discounts = [];
+                if (isset($item['discounts']) && is_array($item['discounts'])) {
+                    foreach ($item['discounts'] as $discount) {
+                        $discounts[] = $discount['name'] . ' (' . $discount['amount'] . ')';
+                    }
+                }
+                $discount_display = implode(', ', $discounts) ?: 'None';
 
                 echo "<tr>";
                 echo "<td>{$receipt_id}</td>";
@@ -98,10 +128,13 @@ if (isset($data['receipts'])) {
                 echo "<td>{$quantity}</td>";
                 echo "<td>{$item_price}</td>";
                 echo "<td>{$total_item_price}</td>";
+                echo "<td>{$employee}</td>";
+                echo "<td>{$store}</td>";
+                echo "<td>{$customer}</td>";
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='13'>No items found for this receipt.</td></tr>";
+            echo "<tr><td colspan='16'>No items found for this receipt.</td></tr>";
         }
     }
     echo "</table>";
