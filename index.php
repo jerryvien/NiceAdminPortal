@@ -1,13 +1,18 @@
-<html>
-  <head>
-    <title>reCAPTCHA demo: Simple page</title>
-    <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
-  </head>
-  <body>
-    <form action="" method="POST">
-      <div class="g-recaptcha" data-sitekey="6LdJUwUrAAAAAEFlVAm-qCLZvh9ozcWt2rZz6Lbh" data-action="LOGIN"></div>
-      <br/>
-      <input type="submit" value="Submit">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google reCAPTCHA v2 Example</title>
+    <!-- Load reCAPTCHA API -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <h1>Submit Your Inquiry</h1>
+    <form action="validate_captcha.php" method="post">
+        <!-- Google reCAPTCHA Widget -->
+        <div class="g-recaptcha" data-sitekey="6LeVaQUrAAAAALa-hI5v-ZyAoZLUDMJeYBvBw_bZ"></div>
+        <br>
+        <input type="submit" value="Submit">
     </form>
-  </body>
+</body>
 </html>
