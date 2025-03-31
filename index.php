@@ -85,6 +85,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
           <span>Dashboard</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="fetch_sheet.php">
+          <i class="bi bi-grid"></i>
+          <span>Data</span>
+        </a>
+      </li>
       <!-- (Other menu items) -->
     </ul>
   </aside><!-- End Sidebar-->
