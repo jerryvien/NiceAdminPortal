@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 $api_url = 'https://api.loyverse.com/v1.0/receipts';
 
 // Your Loyverse API Access Token
-$access_token = '2a0eda9529444687bccb486d2bf37131';  // Replace with your real token
+$access_token = '2a0eda9529444687bccb486d2bf37131';  // Replace with your actual token
 
 // Set the parameters for the API request
 $params = http_build_query([
@@ -45,21 +45,22 @@ $data = json_decode($response, true);
 // Display the fetched data as a table
 if (isset($data['receipts'])) {
     echo "<table border='1'>";
-    echo "<tr><th>Receipt Number</th><th>Date</th><th>Total Price</th><th>Items</th></tr>";
+    echo "<tr><th>Receipt ID</th><th>Receipt Number</th><th>Date</th><th>Total Price</th><th>Items</th></tr>";
 
     foreach ($data['receipts'] as $receipt) {
+        $receipt_id = isset($receipt['id']) ? $receipt['id'] : 'N/A';
         $receipt_number = isset($receipt['number']) ? $receipt['number'] : 'N/A';
         $created_at = isset($receipt['created_at']) ? $receipt['created_at'] : 'N/A';
         $total_price = isset($receipt['total_price']) ? $receipt['total_price'] : '0.00';
 
-        // Check if 'items' array exists and is not empty
-        if (isset($receipt['items']) && is_array($receipt['items']) && count($receipt['items']) > 0) {
+        // Check if 'line_items' array exists and is not empty
+        if (isset($receipt['line_items']) && is_array($receipt['line_items']) && count($receipt['line_items']) > 0) {
             $items = array_map(function($item) {
                 $item_name = isset($item['name']) ? $item['name'] : 'Unknown Item';
                 $quantity = isset($item['quantity']) ? $item['quantity'] : '0';
                 $price = isset($item['price']) ? $item['price'] : '0.00';
                 return "{$item_name} (Qty: {$quantity}, Price: {$price})";
-            }, $receipt['items']);
+            }, $receipt['line_items']);
 
             $items_display = implode('<br>', $items);
         } else {
@@ -67,10 +68,11 @@ if (isset($data['receipts'])) {
         }
 
         echo "<tr>";
+        echo "<td>{$receipt_id}</td>";
         echo "<td>{$receipt_number}</td>";
         echo "<td>{$created_at}</td>";
         echo "<td>{$total_price}</td>";
-        echo "<td>$items_display</td>";
+        echo "<td>{$items_display}</td>";
         echo "</tr>";
     }
     echo "</table>";
