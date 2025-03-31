@@ -45,7 +45,7 @@ $data = json_decode($response, true);
 // Display the fetched data as a table
 if (isset($data['receipts'])) {
     echo "<table border='1'>";
-    echo "<tr><th>Receipt ID</th><th>Receipt Number</th><th>Date</th><th>Total Price</th><th>Item Name</th><th>Category</th><th>Quantity</th><th>Item Price</th></tr>";
+    echo "<tr><th>Receipt ID</th><th>Receipt Number</th><th>Date</th><th>Total Price</th><th>Item Name</th><th>Category</th><th>SKU</th><th>Modifiers</th><th>Taxes</th><th>Discounts</th><th>Quantity</th><th>Item Price</th><th>Total Item Price</th></tr>";
 
     foreach ($data['receipts'] as $receipt) {
         $receipt_id = $receipt['id'] ?? 'N/A';
@@ -59,6 +59,25 @@ if (isset($data['receipts'])) {
                 $item_category = $item['category_name'] ?? 'Unknown Category';
                 $quantity = $item['quantity'] ?? '0';
                 $item_price = $item['price'] ?? '0.00';
+                $total_item_price = $quantity * $item_price;
+                $item_sku = $item['sku'] ?? 'N/A';
+
+                // Handle Modifiers
+                $modifiers = [];
+                if (isset($item['modifiers']) && is_array($item['modifiers'])) {
+                    foreach ($item['modifiers'] as $modifier) {
+                        $modifiers[] = $modifier['name'];
+                    }
+                }
+                $modifiers_display = implode(', ', $modifiers) ?: 'None';
+
+                // Handle Taxes
+                $taxes = $item['taxes'] ?? [];
+                $tax_display = implode(', ', array_map(fn($tax) => $tax['name'], $taxes)) ?: 'None';
+
+                // Handle Discounts
+                $discounts = $item['discounts'] ?? [];
+                $discount_display = implode(', ', array_map(fn($discount) => $discount['name'], $discounts)) ?: 'None';
 
                 echo "<tr>";
                 echo "<td>{$receipt_id}</td>";
@@ -67,12 +86,17 @@ if (isset($data['receipts'])) {
                 echo "<td>{$total_price}</td>";
                 echo "<td>{$item_name}</td>";
                 echo "<td>{$item_category}</td>";
+                echo "<td>{$item_sku}</td>";
+                echo "<td>{$modifiers_display}</td>";
+                echo "<td>{$tax_display}</td>";
+                echo "<td>{$discount_display}</td>";
                 echo "<td>{$quantity}</td>";
                 echo "<td>{$item_price}</td>";
+                echo "<td>{$total_item_price}</td>";
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='8'>No items found for this receipt.</td></tr>";
+            echo "<tr><td colspan='13'>No items found for this receipt.</td></tr>";
         }
     }
     echo "</table>";
