@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 $api_url = 'https://api.loyverse.com/v1.0/receipts';
 
 // Your Loyverse API Access Token
-$access_token = '2a0eda9529444687bccb486d2bf37131';  // Replace with your real token
+$access_token = 'fe169949b3984e25a48aa9e89ce28bf0';  // Replace with your real token
 
 // Set the parameters for the API request
 $params = http_build_query([
