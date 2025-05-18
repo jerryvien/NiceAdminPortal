@@ -38,54 +38,53 @@ curl_close($ch);
 // Decode the JSON response
 $data = json_decode($response, true);
 
-// Store results in variable
+// Insert data into a variable
 $receipt_data = [];
 
 if (isset($data['receipts'])) {
     foreach ($data['receipts'] as $receipt) {
-        $receipt_id = $receipt['id'] ?? 'N/A';
-        $receipt_number = $receipt['number'] ?? 'N/A';
+        $receipt_number = $receipt['receipt_number'] ?? 'N/A';
         $created_at = $receipt['created_at'] ?? 'N/A';
-        $total_price = $receipt['total_price'] ?? '0.00';
-        $employee = $receipt['employee_name'] ?? 'N/A';
-        $store = $receipt['store_id'] ?? 'N/A';
-        $customer = $receipt['customer_name'] ?? 'N/A';
+        $total_money = $receipt['total_money'] ?? 0;
+        $employee_id = $receipt['employee_id'] ?? 'N/A';
+        $store_id = $receipt['store_id'] ?? 'N/A';
+        $customer_id = $receipt['customer_id'] ?? 'N/A';
 
-        if (isset($receipt['line_items']) && is_array($receipt['line_items'])) {
+        if (!empty($receipt['line_items'])) {
             foreach ($receipt['line_items'] as $item) {
-                $item_name = $item['name'] ?? 'Unknown Item';
-                $item_category = $item['category_name'] ?? 'Unknown Category';
+                $item_name = $item['item_name'] ?? 'Unknown Item';
+                $item_category = ''; // Not provided
                 $quantity = $item['quantity'] ?? 0;
-                $item_price = $item['price'] ?? 0.00;
-                $total_item_price = $quantity * $item_price;
+                $item_price = $item['price'] ?? 0;
+                $total_item_price = $item['total_money'] ?? ($item_price * $quantity);
                 $item_sku = $item['sku'] ?? 'N/A';
 
                 $modifiers = [];
-                if (!empty($item['modifiers'])) {
-                    foreach ($item['modifiers'] as $mod) {
-                        $modifiers[] = $mod['name'];
+                if (!empty($item['line_modifiers'])) {
+                    foreach ($item['line_modifiers'] as $mod) {
+                        $modifiers[] = $mod['name'] ?? 'Unnamed Modifier';
                     }
                 }
 
                 $taxes = [];
-                if (!empty($item['taxes'])) {
-                    foreach ($item['taxes'] as $tax) {
-                        $taxes[] = $tax['name'] . ' (' . $tax['rate'] . '%)';
+                if (!empty($item['line_taxes'])) {
+                    foreach ($item['line_taxes'] as $tax) {
+                        $taxes[] = $tax['name'] . ' (' . ($tax['rate'] ?? 0) . '%)';
                     }
                 }
 
                 $discounts = [];
-                if (!empty($item['discounts'])) {
-                    foreach ($item['discounts'] as $discount) {
-                        $discounts[] = $discount['name'] . ' (' . $discount['amount'] . ')';
+                if (!empty($item['line_discounts'])) {
+                    foreach ($item['line_discounts'] as $discount) {
+                        $discounts[] = $discount['name'] . ' (' . ($discount['amount'] ?? 0) . ')';
                     }
                 }
 
                 $receipt_data[] = [
-                    'receipt_id' => $receipt_id,
+                    'receipt_id' => $receipt_number,
                     'receipt_number' => $receipt_number,
                     'date' => $created_at,
-                    'total_price' => $total_price,
+                    'total_price' => $total_money,
                     'item_name' => $item_name,
                     'category' => $item_category,
                     'sku' => $item_sku,
@@ -95,9 +94,9 @@ if (isset($data['receipts'])) {
                     'quantity' => $quantity,
                     'item_price' => $item_price,
                     'total_item_price' => $total_item_price,
-                    'employee' => $employee,
-                    'store' => $store,
-                    'customer' => $customer,
+                    'employee' => $employee_id,
+                    'store' => $store_id,
+                    'customer' => $customer_id,
                 ];
             }
         }
@@ -121,7 +120,6 @@ if (isset($data['receipts'])) {
 <table id="receiptsTable" class="display" style="width:100%">
     <thead>
         <tr>
-            <th>Receipt ID</th>
             <th>Receipt Number</th>
             <th>Date</th>
             <th>Total Price</th>
@@ -142,7 +140,6 @@ if (isset($data['receipts'])) {
     <tbody>
         <?php foreach ($receipt_data as $row): ?>
             <tr>
-                <td><?= htmlspecialchars($row['receipt_id']) ?></td>
                 <td><?= htmlspecialchars($row['receipt_number']) ?></td>
                 <td><?= htmlspecialchars($row['date']) ?></td>
                 <td><?= htmlspecialchars($row['total_price']) ?></td>
@@ -167,7 +164,7 @@ if (isset($data['receipts'])) {
     $(document).ready(function () {
         $('#receiptsTable').DataTable({
             pageLength: 10,
-            order: [[2, 'desc']],
+            order: [[1, 'desc']], // Order by Date
             responsive: true
         });
     });
