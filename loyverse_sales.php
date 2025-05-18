@@ -1,5 +1,4 @@
 <?php
-
 // Enable error reporting for debugging
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -13,8 +12,8 @@ $access_token = 'fe169949b3984e25a48aa9e89ce28bf0';  // Replace with your real t
 
 // Set the parameters for the API request
 $params = http_build_query([
-    'limit' => 50,  // Maximum number of receipts per request (Max: 250)
-    'created_at_min' => '2025-03-01T00:00:00Z',  // Retrieve receipts from this date onward
+    'limit' => 50,
+    'created_at_min' => '2025-03-01T00:00:00Z',
 ]);
 
 // Initialize cURL
@@ -26,49 +25,23 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Content-Type: application/json',
 ]);
 
-// Execute the request
 $response = curl_exec($ch);
 
-// Check for errors
 if (curl_errno($ch)) {
     echo 'cURL Error: ' . curl_error($ch);
     curl_close($ch);
     exit();
 }
 
-// Close cURL
 curl_close($ch);
 
 // Decode the JSON response
 $data = json_decode($response, true);
 
-// Display raw response for debugging
-echo "<pre>";
-print_r($data);
-echo "</pre>";
+// Store results in variable
+$receipt_data = [];
 
-// Display the fetched data as a table
 if (isset($data['receipts'])) {
-    echo "<table border='1'>";
-    echo "<tr>
-        <th>Receipt ID</th>
-        <th>Receipt Number</th>
-        <th>Date</th>
-        <th>Total Price</th>
-        <th>Item Name</th>
-        <th>Category</th>
-        <th>SKU</th>
-        <th>Modifiers</th>
-        <th>Taxes</th>
-        <th>Discounts</th>
-        <th>Quantity</th>
-        <th>Item Price</th>
-        <th>Total Item Price</th>
-        <th>Employee</th>
-        <th>Store</th>
-        <th>Customer</th>
-    </tr>";
-
     foreach ($data['receipts'] as $receipt) {
         $receipt_id = $receipt['id'] ?? 'N/A';
         $receipt_number = $receipt['number'] ?? 'N/A';
@@ -82,64 +55,123 @@ if (isset($data['receipts'])) {
             foreach ($receipt['line_items'] as $item) {
                 $item_name = $item['name'] ?? 'Unknown Item';
                 $item_category = $item['category_name'] ?? 'Unknown Category';
-                $quantity = $item['quantity'] ?? '0';
-                $item_price = $item['price'] ?? '0.00';
+                $quantity = $item['quantity'] ?? 0;
+                $item_price = $item['price'] ?? 0.00;
                 $total_item_price = $quantity * $item_price;
                 $item_sku = $item['sku'] ?? 'N/A';
 
-                // Handle Modifiers
                 $modifiers = [];
-                if (isset($item['modifiers']) && is_array($item['modifiers'])) {
-                    foreach ($item['modifiers'] as $modifier) {
-                        $modifiers[] = $modifier['name'];
+                if (!empty($item['modifiers'])) {
+                    foreach ($item['modifiers'] as $mod) {
+                        $modifiers[] = $mod['name'];
                     }
                 }
-                $modifiers_display = implode(', ', $modifiers) ?: 'None';
 
-                // Handle Taxes
                 $taxes = [];
-                if (isset($item['taxes']) && is_array($item['taxes'])) {
+                if (!empty($item['taxes'])) {
                     foreach ($item['taxes'] as $tax) {
                         $taxes[] = $tax['name'] . ' (' . $tax['rate'] . '%)';
                     }
                 }
-                $tax_display = implode(', ', $taxes) ?: 'None';
 
-                // Handle Discounts
                 $discounts = [];
-                if (isset($item['discounts']) && is_array($item['discounts'])) {
+                if (!empty($item['discounts'])) {
                     foreach ($item['discounts'] as $discount) {
                         $discounts[] = $discount['name'] . ' (' . $discount['amount'] . ')';
                     }
                 }
-                $discount_display = implode(', ', $discounts) ?: 'None';
 
-                echo "<tr>";
-                echo "<td>{$receipt_id}</td>";
-                echo "<td>{$receipt_number}</td>";
-                echo "<td>{$created_at}</td>";
-                echo "<td>{$total_price}</td>";
-                echo "<td>{$item_name}</td>";
-                echo "<td>{$item_category}</td>";
-                echo "<td>{$item_sku}</td>";
-                echo "<td>{$modifiers_display}</td>";
-                echo "<td>{$tax_display}</td>";
-                echo "<td>{$discount_display}</td>";
-                echo "<td>{$quantity}</td>";
-                echo "<td>{$item_price}</td>";
-                echo "<td>{$total_item_price}</td>";
-                echo "<td>{$employee}</td>";
-                echo "<td>{$store}</td>";
-                echo "<td>{$customer}</td>";
-                echo "</tr>";
+                $receipt_data[] = [
+                    'receipt_id' => $receipt_id,
+                    'receipt_number' => $receipt_number,
+                    'date' => $created_at,
+                    'total_price' => $total_price,
+                    'item_name' => $item_name,
+                    'category' => $item_category,
+                    'sku' => $item_sku,
+                    'modifiers' => implode(', ', $modifiers) ?: 'None',
+                    'taxes' => implode(', ', $taxes) ?: 'None',
+                    'discounts' => implode(', ', $discounts) ?: 'None',
+                    'quantity' => $quantity,
+                    'item_price' => $item_price,
+                    'total_item_price' => $total_item_price,
+                    'employee' => $employee,
+                    'store' => $store,
+                    'customer' => $customer,
+                ];
             }
-        } else {
-            echo "<tr><td colspan='16'>No items found for this receipt.</td></tr>";
         }
     }
-    echo "</table>";
-} else {
-    echo "No sales data found or an error occurred.";
 }
-
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Loyverse Receipts</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+
+<h2>Loyverse Receipts</h2>
+
+<table id="receiptsTable" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Receipt ID</th>
+            <th>Receipt Number</th>
+            <th>Date</th>
+            <th>Total Price</th>
+            <th>Item Name</th>
+            <th>Category</th>
+            <th>SKU</th>
+            <th>Modifiers</th>
+            <th>Taxes</th>
+            <th>Discounts</th>
+            <th>Quantity</th>
+            <th>Item Price</th>
+            <th>Total Item Price</th>
+            <th>Employee</th>
+            <th>Store</th>
+            <th>Customer</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($receipt_data as $row): ?>
+            <tr>
+                <td><?= htmlspecialchars($row['receipt_id']) ?></td>
+                <td><?= htmlspecialchars($row['receipt_number']) ?></td>
+                <td><?= htmlspecialchars($row['date']) ?></td>
+                <td><?= htmlspecialchars($row['total_price']) ?></td>
+                <td><?= htmlspecialchars($row['item_name']) ?></td>
+                <td><?= htmlspecialchars($row['category']) ?></td>
+                <td><?= htmlspecialchars($row['sku']) ?></td>
+                <td><?= htmlspecialchars($row['modifiers']) ?></td>
+                <td><?= htmlspecialchars($row['taxes']) ?></td>
+                <td><?= htmlspecialchars($row['discounts']) ?></td>
+                <td><?= htmlspecialchars($row['quantity']) ?></td>
+                <td><?= htmlspecialchars($row['item_price']) ?></td>
+                <td><?= htmlspecialchars($row['total_item_price']) ?></td>
+                <td><?= htmlspecialchars($row['employee']) ?></td>
+                <td><?= htmlspecialchars($row['store']) ?></td>
+                <td><?= htmlspecialchars($row['customer']) ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#receiptsTable').DataTable({
+            pageLength: 10,
+            order: [[2, 'desc']],
+            responsive: true
+        });
+    });
+</script>
+
+</body>
+</html>
