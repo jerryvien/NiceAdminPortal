@@ -4,8 +4,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Set timezone
+date_default_timezone_set('Asia/Kuala_Lumpur');
+
 // Access token
-$access_token = 'fe169949b3984e25a48aa9e89ce28bf0'; // Replace with yours
+$access_token = 'fe169949b3984e25a48aa9e89ce28bf0'; // Replace with your own
 
 // Helper function to fetch paginated data
 function fetchLoyverseData($url, $access_token, $type) {
@@ -42,7 +45,21 @@ $stores = fetchLoyverseData('https://api.loyverse.com/v1.0/stores', $access_toke
 // Map metadata
 $item_categories = [];
 foreach ($items as $item) {
-    $item_categories[$item['id']] = $item['category_name'] ?? 'Uncategorized';
+    $category = $item['category_name'] ?? 'Uncategorized';
+
+    // Map item_id
+    if (!empty($item['id'])) {
+        $item_categories[$item['id']] = $category;
+    }
+
+    // Map variant_id
+    if (!empty($item['variants'])) {
+        foreach ($item['variants'] as $variant) {
+            if (!empty($variant['id'])) {
+                $item_categories[$variant['id']] = $category;
+            }
+        }
+    }
 }
 
 $employee_names = [];
@@ -77,7 +94,11 @@ $data = json_decode($response, true);
 if (isset($data['receipts'])) {
     foreach ($data['receipts'] as $receipt) {
         $receipt_number = $receipt['receipt_number'] ?? 'N/A';
-        $created_at = $receipt['created_at'] ?? 'N/A';
+
+        $created_at_raw = $receipt['created_at'] ?? '';
+        $date = new DateTime($created_at_raw);
+        $created_at = $date->format('Y-m-d H:i');
+
         $total_money = $receipt['total_money'] ?? 0;
         $employee = $employee_names[$receipt['employee_id']] ?? 'N/A';
         $store = $store_names[$receipt['store_id']] ?? 'N/A';
@@ -87,7 +108,10 @@ if (isset($data['receipts'])) {
             foreach ($receipt['line_items'] as $item) {
                 $item_name = $item['item_name'] ?? 'Unknown Item';
                 $item_id = $item['item_id'] ?? '';
-                $item_category = $item_categories[$item_id] ?? 'Unknown';
+                $variant_id = $item['variant_id'] ?? '';
+                $category_key = $variant_id ?: $item_id;
+                $item_category = $item_categories[$category_key] ?? 'Uncategorized';
+
                 $quantity = $item['quantity'] ?? 0;
                 $item_price = $item['price'] ?? 0;
                 $total_item_price = $item['total_money'] ?? ($item_price * $quantity);
@@ -141,7 +165,7 @@ if (isset($data['receipts'])) {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Loyverse Receipts</title>
+    <title>Loyverse Receipts Report</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
