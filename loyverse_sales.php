@@ -1,16 +1,11 @@
 <?php
-// Enable error reporting
+// SETUP
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-// Set timezone
 date_default_timezone_set('Asia/Kuala_Lumpur');
 
-// Access token
-$access_token = 'fe169949b3984e25a48aa9e89ce28bf0'; // Replace with your own
+$access_token = 'fe169949b3984e25a48aa9e89ce28bf0'; // Replace with yours
 
-// Helper function to fetch paginated data
 function fetchLoyverseData($url, $access_token, $type) {
     $results = [];
     $offset = 0;
@@ -37,27 +32,26 @@ function fetchLoyverseData($url, $access_token, $type) {
     return $results;
 }
 
-// Fetch metadata
+// FETCH DATA
 $items = fetchLoyverseData('https://api.loyverse.com/v1.0/items', $access_token, 'items');
 $employees = fetchLoyverseData('https://api.loyverse.com/v1.0/employees', $access_token, 'employees');
 $stores = fetchLoyverseData('https://api.loyverse.com/v1.0/stores', $access_token, 'stores');
+$categories = fetchLoyverseData('https://api.loyverse.com/v1.0/categories', $access_token, 'categories');
 
-// Map metadata
+// MAP DATA
+$category_map = [];
+foreach ($categories as $cat) {
+    $category_map[$cat['id']] = $cat['name'];
+}
+
 $item_categories = [];
 foreach ($items as $item) {
-    $category = $item['category_name'] ?? 'Uncategorized';
-
-    // Map item_id
-    if (!empty($item['id'])) {
-        $item_categories[$item['id']] = $category;
-    }
-
-    // Map variant_id
+    $cat_id = $item['category_id'] ?? null;
+    $cat_name = $category_map[$cat_id] ?? 'Uncategorized';
+    $item_categories[$item['id']] = $cat_name;
     if (!empty($item['variants'])) {
         foreach ($item['variants'] as $variant) {
-            if (!empty($variant['id'])) {
-                $item_categories[$variant['id']] = $category;
-            }
+            $item_categories[$variant['id']] = $cat_name;
         }
     }
 }
@@ -72,13 +66,12 @@ foreach ($stores as $s) {
     $store_names[$s['id']] = $s['name'] ?? 'Unknown Store';
 }
 
-// Fetch receipts
+// FETCH RECEIPTS
 $receipt_data = [];
+$category_totals = [];
+
 $receipts_url = 'https://api.loyverse.com/v1.0/receipts';
-$params = http_build_query([
-    'limit' => 50,
-    'created_at_min' => '2025-03-01T00:00:00Z'
-]);
+$params = http_build_query(['limit' => 50, 'created_at_min' => '2025-03-01T00:00:00Z']);
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, "$receipts_url?$params");
@@ -94,11 +87,7 @@ $data = json_decode($response, true);
 if (isset($data['receipts'])) {
     foreach ($data['receipts'] as $receipt) {
         $receipt_number = $receipt['receipt_number'] ?? 'N/A';
-
-        $created_at_raw = $receipt['created_at'] ?? '';
-        $date = new DateTime($created_at_raw);
-        $created_at = $date->format('Y-m-d H:i');
-
+        $created_at = (new DateTime($receipt['created_at'] ?? ''))->format('Y-m-d H:i');
         $total_money = $receipt['total_money'] ?? 0;
         $employee = $employee_names[$receipt['employee_id']] ?? 'N/A';
         $store = $store_names[$receipt['store_id']] ?? 'N/A';
@@ -107,37 +96,21 @@ if (isset($data['receipts'])) {
         if (!empty($receipt['line_items'])) {
             foreach ($receipt['line_items'] as $item) {
                 $item_name = $item['item_name'] ?? 'Unknown Item';
-                $item_id = $item['item_id'] ?? '';
                 $variant_id = $item['variant_id'] ?? '';
-                $category_key = $variant_id ?: $item_id;
-                $item_category = $item_categories[$category_key] ?? 'Uncategorized';
+                $item_id = $item['item_id'] ?? '';
+                $id_key = $variant_id ?: $item_id;
+                $item_category = $item_categories[$id_key] ?? 'Uncategorized';
 
                 $quantity = $item['quantity'] ?? 0;
                 $item_price = $item['price'] ?? 0;
                 $total_item_price = $item['total_money'] ?? ($item_price * $quantity);
                 $item_sku = $item['sku'] ?? 'N/A';
 
-                $modifiers = [];
-                if (!empty($item['line_modifiers'])) {
-                    foreach ($item['line_modifiers'] as $mod) {
-                        $modifiers[] = $mod['name'] ?? 'Unnamed Modifier';
-                    }
-                }
+                $modifiers = array_map(fn($m) => $m['name'] ?? '', $item['line_modifiers'] ?? []);
+                $taxes = array_map(fn($t) => $t['name'] . ' (' . ($t['rate'] ?? 0) . '%)', $item['line_taxes'] ?? []);
+                $discounts = array_map(fn($d) => $d['name'] . ' (' . ($d['amount'] ?? 0) . ')', $item['line_discounts'] ?? []);
 
-                $taxes = [];
-                if (!empty($item['line_taxes'])) {
-                    foreach ($item['line_taxes'] as $tax) {
-                        $taxes[] = $tax['name'] . ' (' . ($tax['rate'] ?? 0) . '%)';
-                    }
-                }
-
-                $discounts = [];
-                if (!empty($item['line_discounts'])) {
-                    foreach ($item['line_discounts'] as $discount) {
-                        $discounts[] = $discount['name'] . ' (' . ($discount['amount'] ?? 0) . ')';
-                    }
-                }
-
+                // Store data
                 $receipt_data[] = [
                     'receipt_number' => $receipt_number,
                     'date' => $created_at,
@@ -155,6 +128,9 @@ if (isset($data['receipts'])) {
                     'store' => $store,
                     'customer' => $customer,
                 ];
+
+                // Sum category sales
+                $category_totals[$item_category] = ($category_totals[$item_category] ?? 0) + $total_item_price;
             }
         }
     }
@@ -165,14 +141,40 @@ if (isset($data['receipts'])) {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Loyverse Receipts Report</title>
+    <title>Loyverse Sales Report</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <h2>Loyverse Receipts Report</h2>
+
+<canvas id="categoryChart" height="100"></canvas>
+
+<script>
+    const ctx = document.getElementById('categoryChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: <?= json_encode(array_keys($category_totals)) ?>,
+            datasets: [{
+                label: 'Total Sales by Category (MYR)',
+                data: <?= json_encode(array_values($category_totals)) ?>,
+                backgroundColor: 'rgba(54, 162, 235, 0.7)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 
 <table id="receiptsTable" class="display" style="width:100%">
     <thead>
@@ -215,6 +217,14 @@ if (isset($data['receipts'])) {
             </tr>
         <?php endforeach; ?>
     </tbody>
+    <tfoot>
+        <?php foreach ($category_totals as $cat => $total): ?>
+            <tr>
+                <td colspan="4"><strong>Total for <?= htmlspecialchars($cat) ?>:</strong></td>
+                <td colspan="11"><strong><?= number_format($total, 2) ?> MYR</strong></td>
+            </tr>
+        <?php endforeach; ?>
+    </tfoot>
 </table>
 
 <script>
