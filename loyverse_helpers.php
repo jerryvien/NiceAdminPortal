@@ -1,4 +1,6 @@
 <?php
+// loyverse_helpers.php (revised with logging)
+
 function fetchLoyverseData($url, $access_token, $type) {
     $results = [];
     $offset = 0;
@@ -19,6 +21,7 @@ function fetchLoyverseData($url, $access_token, $type) {
             $results = array_merge($results, $data[$type]);
             $offset += $limit;
         } else {
+            error_log("Failed to fetch or decode $type data from $url");
             break;
         }
     } while (count($data[$type] ?? []) === $limit);
@@ -31,6 +34,8 @@ function getCategoryMap($access_token) {
     foreach ($categories as $cat) {
         if (isset($cat['id'], $cat['name'])) {
             $map[$cat['id']] = $cat['name'];
+        } else {
+            error_log("Category missing ID or name: " . json_encode($cat));
         }
     }
     return $map;
@@ -41,11 +46,22 @@ function getItemCategoryMap($access_token, $category_map) {
     $map = [];
     foreach ($items as $item) {
         $cat_id = $item['category_id'] ?? null;
+        if (!$cat_id) {
+            error_log("Item {$item['id']} missing category_id");
+        }
         $cat_name = $category_map[$cat_id] ?? 'Uncategorized';
-        if (!empty($item['id'])) $map[$item['id']] = $cat_name;
+
+        if (!empty($item['id'])) {
+            $map[$item['id']] = $cat_name;
+        }
+
         if (!empty($item['variants'])) {
             foreach ($item['variants'] as $variant) {
-                if (!empty($variant['id'])) $map[$variant['id']] = $cat_name;
+                if (!empty($variant['id'])) {
+                    $map[$variant['id']] = $cat_name;
+                } else {
+                    error_log("Variant missing ID in item {$item['id']}");
+                }
             }
         }
     }
@@ -58,6 +74,8 @@ function getEmployeeMap($access_token) {
     foreach ($employees as $e) {
         if (isset($e['id'], $e['name'])) {
             $map[$e['id']] = $e['name'];
+        } else {
+            error_log("Employee record missing ID or name: " . json_encode($e));
         }
     }
     return $map;
@@ -69,6 +87,8 @@ function getStoreMap($access_token) {
     foreach ($stores as $s) {
         if (isset($s['id'], $s['name'])) {
             $map[$s['id']] = $s['name'];
+        } else {
+            error_log("Store record missing ID or name: " . json_encode($s));
         }
     }
     return $map;
@@ -87,5 +107,8 @@ function fetchReceipts($access_token, $created_after = '2025-03-01T00:00:00Z') {
     $response = curl_exec($ch);
     curl_close($ch);
     $data = json_decode($response, true);
+    if (!isset($data['receipts'])) {
+        error_log("No receipts returned or decoding failed: " . json_encode($data));
+    }
     return $data['receipts'] ?? [];
 }
