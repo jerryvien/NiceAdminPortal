@@ -276,3 +276,24 @@
                             </div>
                         </div>
                     </div>
+
+
+                    <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.getElementById('terms_toggle');
+    const toggleCircle = toggleBtn.querySelector('span');
+
+    toggleBtn.addEventListener('click', function () {
+      const isChecked = toggleBtn.getAttribute('aria-checked') === 'true';
+      toggleBtn.setAttribute('aria-checked', String(!isChecked));
+
+      // Toggle background color
+      toggleBtn.classList.toggle('bg-indigo-600', !isChecked);
+      toggleBtn.classList.toggle('bg-gray-200', isChecked);
+
+      // Toggle position of the circle
+      toggleCircle.classList.toggle('translate-x-5', !isChecked);
+      toggleCircle.classList.toggle('translate-x-0', isChecked);
+    });
+  });
+</script>
