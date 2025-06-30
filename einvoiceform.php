@@ -361,6 +361,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </div>
                         </div>
 
+                        <!-- Terms Toggle -->
+                        <div class="flex items-center">
+                            <button
+                            class="group relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+                            id="terms_toggle"
+                            role="switch"
+                            type="button"
+                            aria-checked="false"
+                            >
+                            <span aria-hidden="true" class="pointer-events-none inline-block size-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out translate-x-0"></span>
+                            </button>
+                            <span class="ml-3 text-sm font-medium text-gray-900">
+                            I agree to the <span class="cursor-pointer text-blue-600 underline">Terms of Service</span> and <span class="cursor-pointer text-blue-600 underline">Privacy Policy</span>
+                            </span>
+                        </div>
+
+                         <!-- Submit and Reset Buttons -->
+                        <div class="mt-4 pb-4">
+                            <button
+                            type="submit"
+                            class="rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500"
+                            >
+                            Submit
+                            </button>
+                            <button
+                            type="button"
+                            class="ml-2 rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500"
+                            >
+                            Reset
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

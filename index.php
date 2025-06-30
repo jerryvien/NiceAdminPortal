@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-none d-lg-block">Weng Cheong Einvoice</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
@@ -89,12 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         <a class="nav-link" href="einvoiceform.php">
           <i class="bi bi-grid"></i>
           <span>Einvoice QR</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="loyverse_sales.php">
-          <i class="bi bi-grid"></i>
-          <span>Data</span>
         </a>
       </li>
       <!-- (Other menu items) -->
