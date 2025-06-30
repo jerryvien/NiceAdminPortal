@@ -114,16 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
     <section class="section">
       <div class="container mt-4 text-center">
-        <!-- The E-invoice Request Button -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#captchaModal">
-          E-Invoice Request
-        </button>
 
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>e-Invoice Form</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -137,8 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
       margin-top: 30px;
     }
   </style>
-</head>
-<body>
 
   <div class="container">
     <div class="row">
@@ -286,10 +275,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
       </div>
     </form>
   </div>
-
-</body>
-</html>
-
 
       </div>
     </section>
