@@ -123,167 +123,159 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Invoice Generator</title>
+  <title>e-Invoice Form</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #1c1c1e;
-      color: white;
-    }
-    .form-control, .form-select {
-      background-color: #2c2c2e;
-      color: white;
-      border: 1px solid #444;
-    }
-    .form-check-label a {
-      color: #0d6efd;
-      text-decoration: underline;
-    }
-    .form-section {
-      padding: 30px;
+      padding: 40px;
     }
     .logo {
-      text-align: right;
+      max-height: 100px;
+      float: right;
+    }
+    .form-section {
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
 
-<div class="container mt-4">
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <h3>Generate</h3>
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Generate <span class="badge bg-primary">FAQ</span></h4>
+      <img src="your-logo.png" alt="Navbright Logo" class="logo">
     </div>
-    <div class="col-md-6 logo">
-      <img src="https://jayagrocer.com/img/logo.png" alt="Jaya Grocer Logo" height="50">
-    </div>
-  </div>
 
-  <form>
-    <div class="row g-3 form-section">
+    <form class="row g-3 form-section">
+      <!-- Row 1 -->
       <div class="col-md-4">
         <label class="form-label">ID Type</label>
         <select class="form-select">
           <option selected>BRN</option>
-          <!-- Add more options as needed -->
+          <option>NRIC</option>
         </select>
       </div>
-
       <div class="col-md-4">
-        <label class="form-label">Business Registration No. (New)</label>
-        <input type="text" class="form-control" placeholder="402005123456">
+        <label class="form-label">Business Registration No. (New) *</label>
+        <input type="text" class="form-control" placeholder="201901234567">
       </div>
-
       <div class="col-md-4">
-        <label class="form-label">Tax Identification No.</label>
+        <label class="form-label">Tax Identification No. *</label>
         <div class="input-group">
           <input type="text" class="form-control">
-          <button class="btn btn-outline-light" type="button">Validate</button>
+          <button class="btn btn-primary" type="button">Validate</button>
         </div>
       </div>
 
-      <div class="col-md-6">
+      <!-- Row 2 -->
+      <div class="col-md-4">
         <label class="form-label">Personal / Company Name *</label>
-        <input type="text" class="form-control" placeholder="ABC SDN. BHD.">
+        <input type="text" class="form-control">
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Address Line 1 *</label>
         <input type="text" class="form-control" placeholder="123, Jalan A">
       </div>
 
-      <div class="col-md-6">
+      <!-- Row 3 -->
+      <div class="col-md-4">
         <label class="form-label">Email *</label>
         <input type="email" class="form-control" placeholder="abc@example.com">
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Address Line 2</label>
         <input type="text" class="form-control">
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Confirm Email *</label>
         <input type="email" class="form-control" placeholder="abc@example.com">
       </div>
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Address Line 3</label>
         <input type="text" class="form-control">
       </div>
 
-      <div class="col-md-6">
+      <!-- Row 4 -->
+      <div class="col-md-4">
         <label class="form-label">Phone *</label>
-        <input type="text" class="form-control" placeholder="0125436789">
+        <input type="text" class="form-control" placeholder="60123456789">
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
         <label class="form-label">Postcode *</label>
         <input type="text" class="form-control">
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
         <label class="form-label">City *</label>
-        <input type="text" class="form-control" placeholder="Kuala Lumpur">
+        <input type="text" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">State *</label>
+        <select class="form-select">
+          <option selected>--- Please Select ---</option>
+          <option>Selangor</option>
+        </select>
       </div>
 
-      <div class="col-md-6">
+      <!-- Row 5 -->
+      <div class="col-md-4">
         <label class="form-label">Business Registration No. (Old)</label>
         <input type="text" class="form-control" placeholder="1234567-X">
       </div>
-      <div class="col-md-3">
-        <label class="form-label">State *</label>
-        <select class="form-select">
-          <option selected>-- Select State --</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <label class="form-label">Country *</label>
-        <select class="form-select">
-          <option selected>MALAYSIA</option>
-        </select>
-      </div>
-
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Malaysia Standard Industrial Classification (MSIC) Code *</label>
         <select class="form-select">
-          <option selected>00000 - NOT APPLICABLE</option>
+          <option>00000 - NOT APPLICABLE</option>
+          <option>12345 - IT Services</option>
         </select>
       </div>
 
-      <div class="col-md-6">
+      <!-- Row 6 -->
+      <div class="col-md-4">
         <label class="form-label">SST No.</label>
-        <input type="text" class="form-control" placeholder="M32-1234-85893637">
+        <input type="text" class="form-control" placeholder="M32-1234-858-93637">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Country *</label>
+        <select class="form-select">
+          <option selected>Malaysia</option>
+        </select>
       </div>
 
-      <div class="col-md-6">
+      <!-- Row 7 -->
+      <div class="col-md-4">
         <label class="form-label">Invoice No. *</label>
         <input type="text" class="form-control">
       </div>
-
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label class="form-label">Invoice Amount *</label>
-        <input type="text" class="form-control" placeholder="MYR 0.00">
+        <div class="input-group">
+          <span class="input-group-text">MYR</span>
+          <input type="number" class="form-control" value="0.00">
+        </div>
       </div>
 
+      <!-- Agreement -->
       <div class="col-12">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="termsCheck">
-          <label class="form-check-label" for="termsCheck">
+          <input class="form-check-input" type="checkbox" id="agreement">
+          <label class="form-check-label" for="agreement">
             I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
           </label>
         </div>
       </div>
 
-      <div class="col-12">
-        <!-- Placeholder for reCAPTCHA -->
-        <div class="bg-light text-dark p-3 text-center rounded">[reCAPTCHA]</div>
+      <!-- Buttons -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
       </div>
-
-      <div class="col-12">
-        <button type="submit" class="btn btn-success">Submit</button>
-      </div>
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
 
 </body>
 </html>
+
 
       </div>
     </section>
