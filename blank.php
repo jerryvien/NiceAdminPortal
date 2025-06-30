@@ -7,7 +7,7 @@
   <div class="order-1 sm:order-2 flex justify-center sm:justify-end sm:items-center">
     <img
       alt="Navbright Technology"
-      src="/company/navbright-logo-big.png"
+      src="logo.png"
       class="h-auto w-auto max-w-full max-h-40 sm:max-h-60 mx-auto"
     />
   </div>
