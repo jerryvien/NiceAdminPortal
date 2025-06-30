@@ -359,7 +359,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             </div>
                             </div>
                         </div>
-                        </div>
 
                         <!-- Terms Toggle -->
                         <div class="flex items-center">
