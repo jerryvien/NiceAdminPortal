@@ -375,7 +375,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                             I agree to the <span class="cursor-pointer text-blue-600 underline">Terms of Service</span> and <span class="cursor-pointer text-blue-600 underline">Privacy Policy</span>
                             </span>
                         </div>
-                    </div>
+                
                          <!-- Submit and Reset Buttons -->
                             <div class="mt-4">
                             <button
