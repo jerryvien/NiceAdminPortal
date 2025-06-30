@@ -377,19 +377,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                         </div>
                     </div>
                          <!-- Submit and Reset Buttons -->
-                        <div class="mt-4 pb-4">
+                            <div class="mt-4">
                             <button
-                            type="submit"
-                            class="rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500"
+                                type="submit"
+                                class="rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 hover:bg-indigo-500"
                             >
-                            Submit
+                                Submit
                             </button>
                             <button
-                            type="button"
-                            class="ml-2 rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500"
+                                type="button"
+                                class="ml-2 rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500"
                             >
-                            Reset
+                                Reset
                             </button>
+                            </div>
                         </div>
                     </div>
                 </div>
