@@ -119,57 +119,164 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
           E-Invoice Request
         </button>
 
-        <!-- Multi Columns Form -->
-              <form class="row g-3">
-                <div class="col-md-12">
-                  <label for="inputName5" class="form-label">Your Name</label>
-                  <input type="text" class="form-control" id="inputName5">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputEmail5" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="inputEmail5">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputPassword5" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="inputPassword5">
-                </div>
-                <div class="col-12">
-                  <label for="inputAddress5" class="form-label">Address</label>
-                  <input type="text" class="form-control" id="inputAddres5s" placeholder="1234 Main St">
-                </div>
-                <div class="col-12">
-                  <label for="inputAddress2" class="form-label">Address 2</label>
-                  <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputCity" class="form-label">City</label>
-                  <input type="text" class="form-control" id="inputCity">
-                </div>
-                <div class="col-md-4">
-                  <label for="inputState" class="form-label">State</label>
-                  <select id="inputState" class="form-select">
-                    <option selected>Choose...</option>
-                    <option>...</option>
-                  </select>
-                </div>
-                <div class="col-md-2">
-                  <label for="inputZip" class="form-label">Zip</label>
-                  <input type="text" class="form-control" id="inputZip">
-                </div>
-                <div class="col-12">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                    <label class="form-check-label" for="gridCheck">
-                      Check me out
-                    </label>
-                  </div>
-                </div>
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="reset" class="btn btn-secondary">Reset</button>
-                </div>
-              </form><!-- End Multi Columns Form -->
-              
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>e-Invoice Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding: 40px;
+    }
+    .logo {
+      max-height: 100px;
+      float: right;
+    }
+    .form-section {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Generate <span class="badge bg-primary">FAQ</span></h4>
+      <img src="your-logo.png" alt="Navbright Logo" class="logo">
+    </div>
+
+    <form class="row g-3 form-section">
+      <!-- Row 1 -->
+      <div class="col-md-4">
+        <label class="form-label">ID Type</label>
+        <select class="form-select">
+          <option selected>BRN</option>
+          <option>NRIC</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Business Registration No. (New) *</label>
+        <input type="text" class="form-control" placeholder="201901234567">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Tax Identification No. *</label>
+        <div class="input-group">
+          <input type="text" class="form-control">
+          <button class="btn btn-primary" type="button">Validate</button>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="col-md-4">
+        <label class="form-label">Personal / Company Name *</label>
+        <input type="text" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Address Line 1 *</label>
+        <input type="text" class="form-control" placeholder="123, Jalan A">
+      </div>
+
+      <!-- Row 3 -->
+      <div class="col-md-4">
+        <label class="form-label">Email *</label>
+        <input type="email" class="form-control" placeholder="abc@example.com">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Address Line 2</label>
+        <input type="text" class="form-control">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Confirm Email *</label>
+        <input type="email" class="form-control" placeholder="abc@example.com">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Address Line 3</label>
+        <input type="text" class="form-control">
+      </div>
+
+      <!-- Row 4 -->
+      <div class="col-md-4">
+        <label class="form-label">Phone *</label>
+        <input type="text" class="form-control" placeholder="60123456789">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Postcode *</label>
+        <input type="text" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">City *</label>
+        <input type="text" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">State *</label>
+        <select class="form-select">
+          <option selected>--- Please Select ---</option>
+          <option>Selangor</option>
+        </select>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="col-md-4">
+        <label class="form-label">Business Registration No. (Old)</label>
+        <input type="text" class="form-control" placeholder="1234567-X">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Malaysia Standard Industrial Classification (MSIC) Code *</label>
+        <select class="form-select">
+          <option>00000 - NOT APPLICABLE</option>
+          <option>12345 - IT Services</option>
+        </select>
+      </div>
+
+      <!-- Row 6 -->
+      <div class="col-md-4">
+        <label class="form-label">SST No.</label>
+        <input type="text" class="form-control" placeholder="M32-1234-858-93637">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Country *</label>
+        <select class="form-select">
+          <option selected>Malaysia</option>
+        </select>
+      </div>
+
+      <!-- Row 7 -->
+      <div class="col-md-4">
+        <label class="form-label">Invoice No. *</label>
+        <input type="text" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Invoice Amount *</label>
+        <div class="input-group">
+          <span class="input-group-text">MYR</span>
+          <input type="number" class="form-control" value="0.00">
+        </div>
+      </div>
+
+      <!-- Agreement -->
+      <div class="col-12">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="agreement">
+          <label class="form-check-label" for="agreement">
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          </label>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>
+
+
       </div>
     </section>
   </main><!-- End #main -->
