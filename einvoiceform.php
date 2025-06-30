@@ -101,213 +101,247 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     </ul>
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
-    <div class="pagetitle">
-      <h1>E-Invoice Request</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">E-Invoice Request</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+    <main id="main" class="main">
+        <div class="pagetitle">
+        <h1>E-Invoice Request</h1>
+        <nav>
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">E-Invoice Request</li>
+            </ol>
+        </nav>
+        </div><!-- End Page Title -->
 
-    <section class="section">
-      <div class="container mt-4 text-center">
+        <section class="section">
+            <div class="container mt-4 text-center">
+                <div class="container">
+                    <div class="row">
+                        <!-- Tailwind CSS via CDN -->
+                            <script src="https://cdn.tailwindcss.com"></script>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      padding: 40px;
-    }
-    .logo {
-      max-height: 100px;
-      float: right;
-    }
-    .form-section {
-      margin-top: 30px;
-    }
-  </style>
+                            <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
 
-  <div class="container">
-    <div class="row">
-  <!-- Left Column: Form -->
-  <div class="col-md-8">
-        <h4>Generate <span class="badge bg-primary">FAQ</span></h4>
+                            <!-- Logo Section -->
+                            <div class="order-1 sm:order-2 flex justify-center sm:justify-end sm:items-center">
+                                <img
+                                alt="Navbright Technology"
+                                src="logo.png"
+                                class="h-auto w-auto max-w-full max-h-40 sm:max-h-60 mx-auto"
+                                />
+                            </div>
 
-        <form class="row g-3 form-section">
-<style>
-  .form-wrapper {
-    max-width: 900px;
-    margin: auto;
-    padding: 30px;
-  }
+                            <!-- Form Section -->
+                            <div class="order-2 sm:order-1">
+                                <div class="mb-4">
+                                <h2 class="text-base/7 font-semibold text-gray-900">
+                                    Generate
+                                    <button
+                                    type="button"
+                                    class="ml-2 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                    >
+                                    FAQ
+                                    </button>
+                                </h2>
+                                <p class="text-sm/6 text-gray-600">Request e-invoice</p>
+                                </div>
 
-  .logo-box {
-    min-height: 216px; /* Roughly 3x input row height (72px x 3) */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+                                <div class="space-y-4">
 
-  .logo-box img {
-    max-height: 200px;
-    width: auto;
-  }
-</style>
+                                <!-- ID Type -->
+                                <div>
+                                    <label for="id_type" class="block text-sm/6 font-medium text-gray-900">ID Type</label>
+                                    <div class="mt-2 relative">
+                                    <select
+                                        id="id_type"
+                                        name="id_type"
+                                        class="w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-gray-900 outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600 text-base sm:text-sm/6"
+                                    >
+                                        <option value="BRN" selected>BRN</option>
+                                        <option value="NRIC">NRIC</option>
+                                        <option value="PASSPORT">Passport No.</option>
+                                        <option value="ARMY">Army No.</option>
+                                    </select>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="absolute right-2 top-2.5 pointer-events-none size-5 text-gray-500 sm:size-4"
+                                        fill="currentColor"
+                                        viewBox="0 0 16 16"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                        fill-rule="evenodd"
+                                        d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                        clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    </div>
+                                </div>
 
-<div class="form-wrapper bg-dark text-white rounded shadow">
-  <div class="row">
-    <!-- Left Column: Form -->
-    <div class="col-md-8">
-      <h4>Generate <span class="badge bg-primary">FAQ</span></h4>
+                                <!-- Business Registration No. -->
+                                <div>
+                                    <label for="id_no" class="block text-sm/6 font-medium text-gray-900">
+                                    Business Registration No. (New)
+                                    <span class="text-red-500 ml-1">*</span>
+                                    </label>
+                                    <div class="mt-2 relative">
+                                    <input
+                                        id="id_no"
+                                        name="id_no"
+                                        type="text"
+                                        required
+                                        placeholder="201901234567"
+                                        class="block w-full rounded-md bg-white px-3 py-1.5 pr-10 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm/6 outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600"
+                                    />
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="absolute right-3 top-2.5 size-5 text-gray-400 sm:size-4"
+                                        fill="currentColor"
+                                        viewBox="0 0 16 16"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                        fill-rule="evenodd"
+                                        d="M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0Zm-6 3.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM7.293 5.293a1 1 0 1 1 .99 1.667c-.459.134-1.033.566-1.033 1.29v.25a.75.75 0 1 0 1.5 0v-.115a2.5 2.5 0 1 0-2.518-4.153.75.75 0 1 0 1.061 1.06Z"
+                                        clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    </div>
+                                </div>
 
-      <form class="row g-3">
-        <!-- Row 1 -->
-        <div class="col-12">
-                <label class="form-label">ID Type</label>
-                <select class="form-select">
-                    <option selected>BRN</option>
-                    <option>NRIC</option>
-                    <option>ARMY ID</option>
-                    <option>PASSPORT</option>
-                </select>
+                                <!-- Tax Identification No. -->
+                                <div>
+                                    <label for="tin" class="block text-sm/6 font-medium text-gray-900">
+                                    Tax Identification No.
+                                    <span class="text-red-500 ml-1">*</span>
+                                    </label>
+                                    <div class="mt-2 flex">
+                                    <input
+                                        id="tin"
+                                        name="tin"
+                                        type="text"
+                                        required
+                                        class="block w-full rounded-l-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 sm:text-sm/6 outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600"
+                                    />
+                                    <button
+                                        type="button"
+                                        class="rounded-r-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                    >
+                                        Validate
+                                    </button>
+                                    </div>
+                                </div>
+
+                                </div>
+                            </div>
+
+                            </div>
+
+                            <!-- Cleaned & Formatted HTML Form Layout using Tailwind CSS -->
+                            <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                            <!-- Left Column -->
+                            <div class="space-y-4">
+                                <!-- Name -->
+                                <div>
+                                <label for="name" class="block text-sm font-medium text-gray-900">Personal / Company Name<span class="text-red-500 ml-1">*</span></label>
+                                <input id="name" name="name" type="text" placeholder="ABC SDN. BHD."  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                                </div>
+
+                                <!-- Email -->
+                                <div>
+                                <label for="email" class="block text-sm font-medium text-gray-900">Email<span class="text-red-500 ml-1">*</span></label>
+                                <input id="email" name="email" type="email" placeholder="abc@example.com"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                                </div>
+
+                                <!-- Confirm Email -->
+                                <div>
+                                <label for="confirm_email" class="block text-sm font-medium text-gray-900">Confirm Email<span class="text-red-500 ml-1">*</span></label>
+                                <input id="confirm_email" name="confirm_email" type="email" placeholder="abc@example.com"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                                </div>
+
+                                <!-- Phone -->
+                                <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-900">Phone<span class="text-red-500 ml-1">*</span></label>
+                                <input id="phone" name="phone" type="number" placeholder="60123456789"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                                </div>
+
+                                <!-- BRN Old -->
+                                <div>
+                                <label for="brn_old" class="block text-sm font-medium text-gray-900">Business Registration No. (Old)</label>
+                                <input id="brn_old" name="brn_old" type="text" placeholder="1234567-X"  class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                                </div>
+
+                                <!-- MSIC Code -->
+                                <div>
+                                <label for="msic_code" class="block text-sm font-medium text-gray-900">MSIC Code<span class="text-red-500 ml-1">*</span></label>
+                                <select id="msic_code" name="msic_code"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                                    <option value="00000">00000 - NOT APPLICABLE</option>
+                                    <!-- Other options trimmed for brevity -->
+                                </select>
+                                </div>
+
+                                <!-- SST No. -->
+                                <div>
+                                <label for="sst_no" class="block text-sm font-medium text-gray-900">SST No.</label>
+                                <input id="sst_no" name="sst_no" type="text" placeholder="M32-1234-858-93637"  class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="space-y-4">
+                                <!-- Address Line 1 -->
+                                <div>
+                                <label for="address_line_1" class="block text-sm font-medium text-gray-900">Address Line 1<span class="text-red-500 ml-1">*</span></label>
+                                <input id="address_line_1" name="address_line_1" type="text" placeholder="123, Jalan A"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                                </div>
+
+                                <!-- Address Line 2 -->
+                                <div>
+                                <label for="address_line_2" class="block text-sm font-medium text-gray-900">Address Line 2</label>
+                                <input id="address_line_2" name="address_line_2" type="text"  class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                                </div>
+
+                                <!-- Address Line 3 -->
+                                <div>
+                                <label for="address_line_3" class="block text-sm font-medium text-gray-900">Address Line 3</label>
+                                <input id="address_line_3" name="address_line_3" type="text"  class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                                </div>
+
+                                <!-- Postcode -->
+                                <div>
+                                <label for="postcode" class="block text-sm font-medium text-gray-900">Postcode<span class="text-red-500 ml-1">*</span></label>
+                                <input id="postcode" name="postcode" type="number"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                                </div>
+
+                                <!-- City -->
+                                <div>
+                                <label for="city" class="block text-sm font-medium text-gray-900">City<span class="text-red-500 ml-1">*</span></label>
+                                <input id="city" name="city" type="text"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                                </div>
+
+                                <!-- State -->
+                                <div>
+                                <label for="state" class="block text-sm font-medium text-gray-900">State<span class="text-red-500 ml-1">*</span></label>
+                                <select id="state" name="state"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                                    <option value="">--- Please Select ---</option>
+                                    <option value="Selangor">Selangor</option>
+                                    <!-- Other options trimmed for brevity -->
+                                </select>
+                                </div>
+
+                                <!-- Country -->
+                                <div>
+                                <label for="country" class="block text-sm font-medium text-gray-900">Country<span class="text-red-500 ml-1">*</span></label>
+                                <select id="country" name="country"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                                    <option value="Malaysia" selected>Malaysia</option>
+                                </select>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
                 </div>
-
-                <!-- Row 2 -->
-                <div class="col-12">
-                <label class="form-label">Business Registration No. (New) *</label>
-                <input type="text" class="form-control" placeholder="201901234567">
-                </div>
-
-                <!-- Row 3 -->
-                <div class="col-12">
-                <label class="form-label">Tax Identification No. *</label>
-                <div class="input-group">
-                    <input type="text" class="form-control">
-                    <button class="btn btn-primary" type="button">Validate</button>
-                </div>
-                </div>
-            </form>
             </div>
-
-            <!-- Right Column: Logo -->
-            <div class="col-md-4 logo-box">
-            <img src="logo.png" alt="Navbright Logo" class="img-fluid">
-            </div>
-        </div>
-        </div>
-
-
-      <!-- Row 2 -->
-      <div class="col-md-4">
-        <label class="form-label">Personal / Company Name *</label>
-        <input type="text" class="form-control">
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Address Line 1 *</label>
-        <input type="text" class="form-control" placeholder="123, Jalan A">
-      </div>
-
-      <!-- Row 3 -->
-      <div class="col-md-4">
-        <label class="form-label">Email *</label>
-        <input type="email" class="form-control" placeholder="abc@example.com">
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Address Line 2</label>
-        <input type="text" class="form-control">
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Confirm Email *</label>
-        <input type="email" class="form-control" placeholder="abc@example.com">
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Address Line 3</label>
-        <input type="text" class="form-control">
-      </div>
-
-      <!-- Row 4 -->
-      <div class="col-md-4">
-        <label class="form-label">Phone *</label>
-        <input type="text" class="form-control" placeholder="60123456789">
-      </div>
-      <div class="col-md-2">
-        <label class="form-label">Postcode *</label>
-        <input type="text" class="form-control">
-      </div>
-      <div class="col-md-2">
-        <label class="form-label">City *</label>
-        <input type="text" class="form-control">
-      </div>
-      <div class="col-md-2">
-        <label class="form-label">State *</label>
-        <select class="form-select">
-          <option selected>--- Please Select ---</option>
-          <option>Selangor</option>
-        </select>
-      </div>
-
-      <!-- Row 5 -->
-      <div class="col-md-4">
-        <label class="form-label">Business Registration No. (Old)</label>
-        <input type="text" class="form-control" placeholder="1234567-X">
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Malaysia Standard Industrial Classification (MSIC) Code *</label>
-        <select class="form-select">
-          <option>00000 - NOT APPLICABLE</option>
-          <option>12345 - IT Services</option>
-        </select>
-      </div>
-
-      <!-- Row 6 -->
-      <div class="col-md-4">
-        <label class="form-label">SST No.</label>
-        <input type="text" class="form-control" placeholder="M32-1234-858-93637">
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Country *</label>
-        <select class="form-select">
-          <option selected>Malaysia</option>
-        </select>
-      </div>
-
-      <!-- Row 7 -->
-      <div class="col-md-4">
-        <label class="form-label">Invoice No. *</label>
-        <input type="text" class="form-control">
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Invoice Amount *</label>
-        <div class="input-group">
-          <span class="input-group-text">MYR</span>
-          <input type="number" class="form-control" value="0.00">
-        </div>
-      </div>
-
-      <!-- Agreement -->
-      <div class="col-12">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="agreement">
-          <label class="form-check-label" for="agreement">
-            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-          </label>
-        </div>
-      </div>
-
-      <!-- Buttons -->
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="reset" class="btn btn-secondary">Reset</button>
-      </div>
-    </form>
-  </div>
-
-      </div>
-    </section>
-  </main><!-- End #main -->
+        </section>
+    </main><!-- End #main -->
 
   <!-- Modal for reCAPTCHA and Google Form -->
   <div class="modal fade" id="captchaModal" tabindex="-1" aria-labelledby="captchaModalLabel" aria-hidden="true">
