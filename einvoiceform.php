@@ -141,31 +141,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 <body>
 
   <div class="container">
-    <div class="d-flex justify-content-between align-items-center">
-      <h4>Generate <span class="badge bg-primary">FAQ</span></h4>
-      <img src="your-logo.png" alt="Navbright Logo" class="logo">
+    <div class="row">
+  <!-- Left Column: Form -->
+  <div class="col-md-8">
+        <h4>Generate <span class="badge bg-primary">FAQ</span></h4>
+
+        <form class="row g-3 form-section">
+            <!-- Row 1: ID Type -->
+            <div class="col-12">
+                <label class="form-label">ID Type</label>
+                <select class="form-select">
+                <option selected>BRN</option>
+                <option>NRIC</option>
+                <option>ARMY ID</option>
+                <option>PASSPORT</option>
+                </select>
+            </div>
+
+            <!-- Row 2: Business Registration No. -->
+            <div class="col-12">
+                <label class="form-label">Business Registration No. (New) *</label>
+                <input type="text" class="form-control" placeholder="201901234567">
+            </div>
+
+            <!-- Row 3: Tax ID + Button -->
+            <div class="col-12">
+                <label class="form-label">Tax Identification No. *</label>
+                <div class="input-group">
+                <input type="text" class="form-control">
+                <button class="btn btn-primary" type="button">Validate</button>
+                </div>
+            </div>
+        </form>
     </div>
 
-    <form class="row g-3 form-section">
-      <!-- Row 1 -->
-      <div class="col-md-4">
-        <label class="form-label">ID Type</label>
-        <select class="form-select">
-          <option selected>BRN</option>
-          <option>NRIC</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Business Registration No. (New) *</label>
-        <input type="text" class="form-control" placeholder="201901234567">
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Tax Identification No. *</label>
-        <div class="input-group">
-          <input type="text" class="form-control">
-          <button class="btn btn-primary" type="button">Validate</button>
-        </div>
-      </div>
+    <!-- Right Column: Logo -->
+    <div class="col-md-4 d-flex align-items-start justify-content-end">
+        <img src="your-logo.png" alt="Navbright Logo" class="img-fluid" style="max-height: 80px;">
+    </div>
+    </div>
 
       <!-- Row 2 -->
       <div class="col-md-4">
