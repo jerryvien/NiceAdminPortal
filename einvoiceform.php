@@ -177,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
     <!-- Right Column: Logo -->
     <div class="col-md-4 d-flex align-items-start justify-content-end">
-        <img src="your-logo.png" alt="Navbright Logo" class="img-fluid" style="max-height: 80px;">
+        <img src="logo.png" alt="Navbright Logo" class="img-fluid" style="max-height: 80px;">
     </div>
     </div>
 
