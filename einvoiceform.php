@@ -136,39 +136,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         <h4>Generate <span class="badge bg-primary">FAQ</span></h4>
 
         <form class="row g-3 form-section">
-            <!-- Row 1: ID Type -->
-            <div class="col-12">
+<style>
+  .form-wrapper {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+  }
+
+  .logo-box {
+    min-height: 216px; /* Roughly 3x input row height (72px x 3) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-box img {
+    max-height: 200px;
+    width: auto;
+  }
+</style>
+
+<div class="form-wrapper bg-dark text-white rounded shadow">
+  <div class="row">
+    <!-- Left Column: Form -->
+    <div class="col-md-8">
+      <h4>Generate <span class="badge bg-primary">FAQ</span></h4>
+
+      <form class="row g-3">
+        <!-- Row 1 -->
+        <div class="col-12">
                 <label class="form-label">ID Type</label>
                 <select class="form-select">
-                <option selected>BRN</option>
-                <option>NRIC</option>
-                <option>ARMY ID</option>
-                <option>PASSPORT</option>
+                    <option selected>BRN</option>
+                    <option>NRIC</option>
+                    <option>ARMY ID</option>
+                    <option>PASSPORT</option>
                 </select>
-            </div>
+                </div>
 
-            <!-- Row 2: Business Registration No. -->
-            <div class="col-12">
+                <!-- Row 2 -->
+                <div class="col-12">
                 <label class="form-label">Business Registration No. (New) *</label>
                 <input type="text" class="form-control" placeholder="201901234567">
-            </div>
+                </div>
 
-            <!-- Row 3: Tax ID + Button -->
-            <div class="col-12">
+                <!-- Row 3 -->
+                <div class="col-12">
                 <label class="form-label">Tax Identification No. *</label>
                 <div class="input-group">
-                <input type="text" class="form-control">
-                <button class="btn btn-primary" type="button">Validate</button>
+                    <input type="text" class="form-control">
+                    <button class="btn btn-primary" type="button">Validate</button>
                 </div>
+                </div>
+            </form>
             </div>
-        </form>
-    </div>
 
-    <!-- Right Column: Logo -->
-    <div class="col-md-4 d-flex align-items-start justify-content-end">
-        <img src="logo.png" alt="Navbright Logo" class="img-fluid" style="max-height: 80px;">
-    </div>
-    </div>
+            <!-- Right Column: Logo -->
+            <div class="col-md-4 logo-box">
+            <img src="logo.png" alt="Navbright Logo" class="img-fluid">
+            </div>
+        </div>
+        </div>
+
 
       <!-- Row 2 -->
       <div class="col-md-4">
