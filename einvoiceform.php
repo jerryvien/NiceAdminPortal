@@ -236,107 +236,130 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
                             </div>
 
-                            <!-- Cleaned & Formatted HTML Form Layout using Tailwind CSS -->
-                            <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-                            <!-- Left Column -->
-                            <div class="space-y-4">
-                                <!-- Name -->
-                                <div>
-                                <label for="name" class="block text-sm font-medium text-gray-900">Personal / Company Name<span class="text-red-500 ml-1">*</span></label>
-                                <input id="name" name="name" type="text" placeholder="ABC SDN. BHD."  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
-                                </div>
-
-                                <!-- Email -->
-                                <div>
-                                <label for="email" class="block text-sm font-medium text-gray-900">Email<span class="text-red-500 ml-1">*</span></label>
-                                <input id="email" name="email" type="email" placeholder="abc@example.com"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
-                                </div>
-
-                                <!-- Confirm Email -->
-                                <div>
-                                <label for="confirm_email" class="block text-sm font-medium text-gray-900">Confirm Email<span class="text-red-500 ml-1">*</span></label>
-                                <input id="confirm_email" name="confirm_email" type="email" placeholder="abc@example.com"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
-                                </div>
-
-                                <!-- Phone -->
-                                <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-900">Phone<span class="text-red-500 ml-1">*</span></label>
-                                <input id="phone" name="phone" type="number" placeholder="60123456789"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
-                                </div>
-
-                                <!-- BRN Old -->
-                                <div>
-                                <label for="brn_old" class="block text-sm font-medium text-gray-900">Business Registration No. (Old)</label>
-                                <input id="brn_old" name="brn_old" type="text" placeholder="1234567-X"  class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
-                                </div>
-
-                                <!-- MSIC Code -->
-                                <div>
-                                <label for="msic_code" class="block text-sm font-medium text-gray-900">MSIC Code<span class="text-red-500 ml-1">*</span></label>
-                                <select id="msic_code" name="msic_code"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
-                                    <option value="00000">00000 - NOT APPLICABLE</option>
-                                    <!-- Other options trimmed for brevity -->
-                                </select>
-                                </div>
-
-                                <!-- SST No. -->
-                                <div>
-                                <label for="sst_no" class="block text-sm font-medium text-gray-900">SST No.</label>
-                                <input id="sst_no" name="sst_no" type="text" placeholder="M32-1234-858-93637"  class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
-                                </div>
+                        <!-- Cleaned & Formatted HTML Form Layout using Tailwind CSS -->
+                        <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                        <!-- Left Column -->
+                        <div class="space-y-4">
+                            <!-- Name -->
+                            <div>
+                            <label for="name" class="block text-sm font-bold text-left text-gray-900">Personal / Company Name<span class="text-red-500 ml-1">*</span></label>
+                            <input id="name" name="name" type="text" placeholder="ABC SDN. BHD." required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
                             </div>
 
-                            <!-- Right Column -->
-                            <div class="space-y-4">
-                                <!-- Address Line 1 -->
-                                <div>
-                                <label for="address_line_1" class="block text-sm font-medium text-gray-900">Address Line 1<span class="text-red-500 ml-1">*</span></label>
-                                <input id="address_line_1" name="address_line_1" type="text" placeholder="123, Jalan A"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
-                                </div>
+                            <!-- Email -->
+                            <div>
+                            <label for="email" class="block text-sm font-bold text-left text-gray-900">Email<span class="text-red-500 ml-1">*</span></label>
+                            <input id="email" name="email" type="email" placeholder="abc@example.com" required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                            </div>
 
-                                <!-- Address Line 2 -->
-                                <div>
-                                <label for="address_line_2" class="block text-sm font-medium text-gray-900">Address Line 2</label>
-                                <input id="address_line_2" name="address_line_2" type="text"  class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
-                                </div>
+                            <!-- Confirm Email -->
+                            <div>
+                            <label for="confirm_email" class="block text-sm font-bold text-left text-gray-900">Confirm Email<span class="text-red-500 ml-1">*</span></label>
+                            <input id="confirm_email" name="confirm_email" type="email" placeholder="abc@example.com" required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                            </div>
 
-                                <!-- Address Line 3 -->
-                                <div>
-                                <label for="address_line_3" class="block text-sm font-medium text-gray-900">Address Line 3</label>
-                                <input id="address_line_3" name="address_line_3" type="text"  class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
-                                </div>
+                            <!-- Phone -->
+                            <div>
+                            <label for="phone" class="block text-sm font-bold text-left text-gray-900">Phone<span class="text-red-500 ml-1">*</span></label>
+                            <input id="phone" name="phone" type="number" placeholder="60123456789" required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                            </div>
 
-                                <!-- Postcode -->
-                                <div>
-                                <label for="postcode" class="block text-sm font-medium text-gray-900">Postcode<span class="text-red-500 ml-1">*</span></label>
-                                <input id="postcode" name="postcode" type="number"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
-                                </div>
+                            <!-- BRN Old -->
+                            <div>
+                            <label for="brn_old" class="block text-sm font-bold text-left text-gray-900">Business Registration No. (Old)</label>
+                            <input id="brn_old" name="brn_old" type="text" placeholder="1234567-X" class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                            </div>
 
-                                <!-- City -->
-                                <div>
-                                <label for="city" class="block text-sm font-medium text-gray-900">City<span class="text-red-500 ml-1">*</span></label>
-                                <input id="city" name="city" type="text"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
-                                </div>
+                            <!-- MSIC Code -->
+                            <div>
+                            <label for="msic_code" class="block text-sm font-bold text-left text-gray-900">MSIC Code<span class="text-red-500 ml-1">*</span></label>
+                            <select id="msic_code" name="msic_code" required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                                <option value="00000">00000 - NOT APPLICABLE</option>
+                                <!-- Other options trimmed for brevity -->
+                            </select>
+                            </div>
 
-                                <!-- State -->
-                                <div>
-                                <label for="state" class="block text-sm font-medium text-gray-900">State<span class="text-red-500 ml-1">*</span></label>
-                                <select id="state" name="state"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
-                                    <option value="">--- Please Select ---</option>
-                                    <option value="Selangor">Selangor</option>
-                                    <!-- Other options trimmed for brevity -->
-                                </select>
-                                </div>
+                            <!-- SST No. -->
+                            <div>
+                            <label for="sst_no" class="block text-sm font-bold text-left text-gray-900">SST No.</label>
+                            <input id="sst_no" name="sst_no" type="text" placeholder="M32-1234-858-93637" class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                            </div>
+                        </div>
 
-                                <!-- Country -->
-                                <div>
-                                <label for="country" class="block text-sm font-medium text-gray-900">Country<span class="text-red-500 ml-1">*</span></label>
-                                <select id="country" name="country"  required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
-                                    <option value="Malaysia" selected>Malaysia</option>
-                                </select>
-                                </div>
+                        <!-- Right Column -->
+                        <div class="space-y-4">
+                            <!-- Address Line 1 -->
+                            <div>
+                            <label for="address_line_1" class="block text-sm font-bold text-left text-gray-900">Address Line 1<span class="text-red-500 ml-1">*</span></label>
+                            <input id="address_line_1" name="address_line_1" type="text" placeholder="123, Jalan A" required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder-gray-400 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                            </div>
+
+                            <!-- Address Line 2 -->
+                            <div>
+                            <label for="address_line_2" class="block text-sm font-bold text-left text-gray-900">Address Line 2</label>
+                            <input id="address_line_2" name="address_line_2" type="text" class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                            </div>
+
+                            <!-- Address Line 3 -->
+                            <div>
+                            <label for="address_line_3" class="block text-sm font-bold text-left text-gray-900">Address Line 3</label>
+                            <input id="address_line_3" name="address_line_3" type="text" class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                            </div>
+
+                            <!-- Postcode -->
+                            <div>
+                            <label for="postcode" class="block text-sm font-bold text-left text-gray-900">Postcode<span class="text-red-500 ml-1">*</span></label>
+                            <input id="postcode" name="postcode" type="number" required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                            </div>
+
+                            <!-- City -->
+                            <div>
+                            <label for="city" class="block text-sm font-bold text-left text-gray-900">City<span class="text-red-500 ml-1">*</span></label>
+                            <input id="city" name="city" type="text" required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                            </div>
+
+                            <!-- State -->
+                            <div>
+                            <label for="state" class="block text-sm font-bold text-left text-gray-900">State<span class="text-red-500 ml-1">*</span></label>
+                            <select id="state" name="state" required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                                <option value="">--- Please Select ---</option>
+                                <option value="Selangor">Selangor</option>
+                                <!-- Other options trimmed for brevity -->
+                            </select>
+                            </div>
+
+                            <!-- Country -->
+                            <div>
+                            <label for="country" class="block text-sm font-bold text-left text-gray-900">Country<span class="text-red-500 ml-1">*</span></label>
+                            <select id="country" name="country" required class="mt-2 w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300">
+                                <option value="Malaysia" selected>Malaysia</option>
+                            </select>
+                            </div>
+                        </div>
+                        </div>
+
+                        <!-- Invoice Section -->
+                        <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                        <!-- Invoice No. -->
+                        <div>
+                            <label for="invoice_no" class="block text-sm font-bold text-left text-gray-900">Invoice No.<span class="text-red-500 ml-1">*</span></label>
+                            <div class="mt-2 grid grid-cols-1">
+                            <input id="invoice_no" name="invoice_no" type="text" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base placeholder:text-gray-400 sm:text-sm text-gray-900 outline outline-1 outline-gray-300 focus:outline-2 focus:outline-indigo-600">
+                            </div>
+                        </div>
+
+                        <!-- Invoice Amount -->
+                        <div>
+                            <label for="invoice_amount" class="block text-sm font-bold text-left text-gray-900">Invoice Amount<span class="text-red-500 ml-1">*</span></label>
+                            <div class="mt-2">
+                            <div class="flex items-center rounded-md bg-white outline outline-1 outline-gray-300 focus-within:outline-2 focus-within:outline-indigo-600">
+                                <div class="text-base pl-3 pr-3 text-gray-500 select-none sm:text-sm">MYR</div>
+                                <input id="invoice_amount" name="invoice_amount" type="number" placeholder="0.00" min="0.00" step="0.01" required class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm">
                             </div>
                             </div>
+                        </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
