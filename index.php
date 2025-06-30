@@ -80,21 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     <!-- (Sidebar content from NiceAdmin template) -->
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="index.php">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="einvoiceform.php">
+        <a class="nav-link" href="index.php">
           <i class="bi bi-grid"></i>
           <span>Einvoice QR</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="loyverse_sales.php">
-          <i class="bi bi-grid"></i>
-          <span>Data</span>
         </a>
       </li>
       <!-- (Other menu items) -->
