@@ -1,4 +1,4 @@
-<div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 px-4 sm:px-20 justify-center mx-auto max-w-screen-lg">
+<div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 px-4 sm:px-20 w-full justify-center">
 
                     <div class="row">
                         <!-- Tailwind CSS via CDN -->
