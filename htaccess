@@ -1,9 +1,0 @@
-# Helpful MIME types for 3D
-AddType application/wasm .wasm
-AddType model/gltf-binary .glb
-AddType model/gltf+json .gltf
-AddType application/javascript .js .mjs
-<FilesMatch "\.wasm$">
-  Header set Access-Control-Allow-Origin "*"
-  Header set Cross-Origin-Resource-Policy "cross-origin"
-</FilesMatch>
