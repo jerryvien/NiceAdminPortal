@@ -1,0 +1,15 @@
+# Serve JS modules correctly
+AddType application/javascript .js .mjs
+
+# DRACO decoder (WASM) MIME
+AddType application/wasm .wasm
+
+# GLB/GLTF helpful types
+AddType model/gltf-binary .glb
+AddType model/gltf+json .gltf
+
+# Allow .wasm range requests (safer streaming)
+<FilesMatch "\.wasm$">
+  Header set Access-Control-Allow-Origin "*"
+  Header set Cross-Origin-Resource-Policy "cross-origin"
+</FilesMatch>
