@@ -3,14 +3,8 @@
   const stage = $('#stage');
   const statusBox = $('#status');
   function logStatus(msg){ statusBox.textContent = msg; }
-  window.addEventListener('error', (e)=> logStatus('JS error: '+(e.message||'unknown')));
-  window.addEventListener('unhandledrejection', (e)=> logStatus('Promise error: '+(e.reason?.message||e.reason||'unknown')));
 
-  // If libs didn't load (CDN blocked), stop here with a helpful hint
-  if(!window.THREE){
-    logStatus('THREE failed to load.\nIf you use a firewall/CDN, allow unpkg.com or use local files.');
-    return;
-  }
+  if(!window.THREE){ logStatus('Local THREE not found. Check /vendor/three/ paths.'); return; }
 
   // Renderer
   const renderer = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
@@ -76,17 +70,16 @@
     if(!selected) return; const idx = selectableMeshes.indexOf(selected); if(idx>=0 && list.children[idx]) list.children[idx].classList.add('active');
   }
 
-  // Load GLB (from drop or URL)
+  // Load GLB
   function loadGLB(url){
     return new Promise((resolve, reject)=>{
       const loader = new THREE.GLTFLoader();
       const draco = new THREE.DRACOLoader();
-      draco.setDecoderPath('https://unpkg.com/three@0.162.0/examples/js/libs/draco/');
+      draco.setDecoderPath('./vendor/three/examples/js/libs/draco/gltf/');
       loader.setDRACOLoader(draco);
       loader.load(url,(gltf)=>{
         if(modelRoot){ scene.remove(modelRoot); modelRoot.traverse(o=>{ if(o.geometry) o.geometry.dispose(); if(o.material) o.material.dispose(); }); }
         modelRoot = gltf.scene; scene.add(modelRoot);
-        // Fit & center
         const box = new THREE.Box3().setFromObject(modelRoot); const size=new THREE.Vector3(); box.getSize(size); const center=new THREE.Vector3(); box.getCenter(center);
         modelRoot.position.sub(center);
         const maxDim = Math.max(size.x,size.y,size.z)||1; modelRoot.scale.setScalar(3.2/maxDim);
@@ -97,114 +90,108 @@
     });
   }
 
-  // Demo model (remote). Fallback to placeholder if blocked
+  // Demo (still uses remote URL; optional)
   async function loadDemo(){
-    logStatus('Loading demo motorcycle…');
-    try{
-      await loadGLB('https://assets.pmnd.rs/moto.glb');
-      logStatus('Demo loaded. Click parts to color.');
-    }catch(e){
-      console.warn('Demo model failed, using placeholder', e);
-      logStatus('Demo blocked. Showing placeholder bike.');
-      loadPlaceholder();
-    }
+    logStatus('Trying demo motorcycle (needs internet)…');
+    try{ await loadGLB('https://assets.pmnd.rs/moto.glb'); logStatus('Demo loaded.'); }
+    catch(e){ logStatus('Demo blocked. Use Placeholder or drop a .glb.'); loadPlaceholder(); }
   }
 
-  // Placeholder geometry (always works)
+  // Placeholder
   function loadPlaceholder(){
     if(modelRoot) scene.remove(modelRoot);
-    const group = new THREE.Group();
+    const g = new THREE.Group();
     const m = new THREE.MeshStandardMaterial({color:'#888',metalness:.7,roughness:.4});
-    const body = new THREE.Mesh(new THREE.BoxGeometry(2,0.7,0.6), m.clone()); body.name='body'; body.position.y=0.9; group.add(body);
+    const body = new THREE.Mesh(new THREE.BoxGeometry(2,0.7,0.6), m.clone()); body.name='body'; body.position.y=0.9; g.add(body);
     const wheelGeo = new THREE.CylinderGeometry(0.45,0.45,0.22,32); wheelGeo.rotateZ(Math.PI/2);
-    const w1 = new THREE.Mesh(wheelGeo, m.clone()); w1.name='front_wheel'; w1.position.set(0.95,0.45,0); group.add(w1);
-    const w2 = new THREE.Mesh(wheelGeo, m.clone()); w2.name='rear_wheel';  w2.position.set(-0.95,0.45,0); group.add(w2);
-    modelRoot = group; scene.add(group);
+    const w1 = new THREE.Mesh(wheelGeo, m.clone()); w1.name='front_wheel'; w1.position.set(0.95,0.45,0); g.add(w1);
+    const w2 = new THREE.Mesh(wheelGeo, m.clone()); w2.name='rear_wheel'; w2.position.set(-0.95,0.45,0); g.add(w2);
+    modelRoot = g; scene.add(g);
     collectSelectable(modelRoot); setSelected(selectableMeshes[0]||null);
   }
 
-  // Mouse picking
-  renderer.domElement.addEventListener('pointerdown', (event)=>{
-    const rect = renderer.domElement.getBoundingClientRect();
-    mouse.x = ((event.clientX - rect.left)/rect.width)*2 - 1;
-    mouse.y = -((event.clientY - rect.top)/rect.height)*2 + 1;
+  // Pick
+  renderer.domElement.addEventListener('pointerdown', (e)=>{
+    const r = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX-r.left)/r.width)*2-1;
+    mouse.y = -((e.clientY-r.top)/r.height)*2+1;
     raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(selectableMeshes, true);
-    if(hits.length){ setSelected(hits[0].object); }
+    const hit = raycaster.intersectObjects(selectableMeshes, true)[0];
+    if(hit) setSelected(hit.object);
   });
 
-  // Drag color swatch / image
+  // Drag color & images
   function makeSwatches(){
     const colors = ['#ffffff','#111111','#ff4444','#ff9900','#ffe14e','#4ea1ff','#62d9a2','#9b6bff','#c9d1e9'];
-    const wrap = $('#swatches'); wrap.innerHTML = '';
-    for(const c of colors){
-      const d = document.createElement('div'); d.className='swatch'; d.style.background=c; d.draggable=true;
-      d.addEventListener('dragstart', (ev)=>{ ev.dataTransfer.setData('text/color', c); });
+    const wrap = document.getElementById('swatches'); wrap.innerHTML='';
+    colors.forEach(c=>{
+      const d=document.createElement('div'); d.className='swatch'; d.style.background=c; d.draggable=true;
+      d.addEventListener('dragstart',ev=>ev.dataTransfer.setData('text/color', c));
       wrap.appendChild(d);
-    }
-    renderer.domElement.addEventListener('dragover', (e)=>{ e.preventDefault(); });
-    renderer.domElement.addEventListener('drop', (e)=>{
+    });
+    renderer.domElement.addEventListener('dragover',e=>e.preventDefault());
+    renderer.domElement.addEventListener('drop',(e)=>{
       e.preventDefault();
       const col = e.dataTransfer.getData('text/color');
-      if(col) applyColorToSelected(col);
-      else if(e.dataTransfer.files && e.dataTransfer.files[0]) handleImageFile(e.dataTransfer.files[0]);
+      if(col) applyColor(col);
+      else if(e.dataTransfer.files?.[0]) applyImage(e.dataTransfer.files[0]);
     });
   }
 
-  function applyColorToSelected(hex){
-    if(!selected) return; const mat = selected.material; if(!mat) return;
-    mat.color = new THREE.Color(hex); mat.needsUpdate = true;
+  function applyColor(hex){
+    if(!selected||!selected.material) return;
+    selected.material.color = new THREE.Color(hex);
+    selected.material.needsUpdate = true;
   }
-
-  function handleImageFile(file){
+  function applyImage(file){
     if(!selected || !file || !file.type.startsWith('image/')) return;
     const url = URL.createObjectURL(file);
-    const tex = new THREE.TextureLoader().load(url, ()=>{ URL.revokeObjectURL(url); });
-    tex.colorSpace = THREE.SRGBColorSpace; tex.flipY = false; tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    const tex = new THREE.TextureLoader().load(url, ()=>URL.revokeObjectURL(url));
+    tex.colorSpace = THREE.SRGBColorSpace; tex.flipY=false; tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
     selected.material.map = tex; selected.material.needsUpdate = true;
   }
 
-  // Dropzone (left panel)
-  const dropzone = $('#dropzone');
-  ['dragenter','dragover'].forEach(evt=> dropzone.addEventListener(evt,(e)=>{ e.preventDefault(); dropzone.style.borderColor = '#6aa3ff'; }));
-  ['dragleave','drop'].forEach(evt=> dropzone.addEventListener(evt,(e)=>{ e.preventDefault(); dropzone.style.borderColor = '#3c4664'; }));
-  dropzone.addEventListener('drop',(e)=>{ const f = e.dataTransfer.files?.[0]; if(f) handleImageFile(f); });
+  // Dropzone
+  const dz = document.getElementById('dropzone');
+  ['dragenter','dragover'].forEach(e=>dz.addEventListener(e,(ev)=>{ ev.preventDefault(); dz.style.borderColor='#6aa3ff'; }));
+  ['dragleave','drop'].forEach(e=>dz.addEventListener(e,(ev)=>{ ev.preventDefault(); dz.style.borderColor='#3c4664'; }));
+  dz.addEventListener('drop',(ev)=>{ const f=ev.dataTransfer.files?.[0]; if(f) applyImage(f); });
 
   // Buttons
-  $('#applyColor').addEventListener('click',()=> applyColorToSelected($('#colorPicker').value));
-  $('#clearTextures').addEventListener('click',()=>{
-    for(const m of selectableMeshes){ const base = baseMaterials.get(m); if(base){ m.material.map = null; m.material.color.copy(base.color); m.material.needsUpdate = true; } }
-  });
+  document.getElementById('applyColor').addEventListener('click',()=>applyColor(document.getElementById('colorPicker').value));
+  document.getElementById('clearTextures').addEventListener('click',()=>{ for(const m of selectableMeshes){ const base=baseMaterials.get(m); if(base){ m.material.map=null; m.material.color.copy(base.color); m.material.needsUpdate=true; } }});
+  let auto=false; document.getElementById('autoRotate').addEventListener('click',()=>{ auto=!auto; document.getElementById('autoRotate').textContent=`Auto Rotate: ${auto?'On':'Off'}`; });
+  let wire=false; document.getElementById('wireframe').addEventListener('click',()=>{ wire=!wire; for(const m of selectableMeshes){ m.material.wireframe = wire; } document.getElementById('wireframe').textContent=`Wireframe: ${wire?'On':'Off'}`; });
 
-  let isAuto = false; $('#autoRotate').addEventListener('click',()=>{ isAuto = !isAuto; $('#autoRotate').textContent = `Auto Rotate: ${isAuto? 'On':'Off'}`; });
-  let isWire = false; $('#wireframe').addEventListener('click',()=>{ isWire = !isWire; for(const m of selectableMeshes){ m.material.wireframe = isWire; } $('#wireframe').textContent = `Wireframe: ${isWire? 'On':'Off'}`; });
-
-  // Drag & drop GLB/GLTF
-  renderer.domElement.addEventListener('dragover', (e)=>{ e.preventDefault(); });
-  renderer.domElement.addEventListener('drop', (e)=>{
-    if(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]){
-      const f = e.dataTransfer.files[0];
+  // Drag & drop GLB
+  renderer.domElement.addEventListener('dragover',e=>e.preventDefault());
+  renderer.domElement.addEventListener('drop',(e)=>{
+    if(e.dataTransfer?.files?.[0]){
+      const f=e.dataTransfer.files[0];
       if(/\.(gltf?|glb)$/i.test(f.name)){
         e.preventDefault();
-        const url = URL.createObjectURL(f); loadGLB(url).then(()=> URL.revokeObjectURL(url));
+        const url=URL.createObjectURL(f); loadGLB(url).then(()=>URL.revokeObjectURL(url));
       }
     }
   });
 
-  // Export snapshot
-  $('#exportPNG').addEventListener('click',()=>{
-    const link = document.createElement('a'); link.download = `motorcycle-${Date.now()}.png`; link.href = renderer.domElement.toDataURL('image/png'); link.click();
+  // Export
+  document.getElementById('exportPNG').addEventListener('click',()=>{
+    const a=document.createElement('a'); a.download=`motorcycle-${Date.now()}.png`; a.href=renderer.domElement.toDataURL('image/png'); a.click();
   });
 
   // Boot
-  makeSwatches(); loadPlaceholder(); logStatus('Ready. Try "Load Demo Bike" or drop your .glb');
+  makeSwatches(); loadPlaceholder(); logStatus('Ready. Upload local libs and drop your .glb');
 
-  // Render loop
-  const clock = new THREE.Clock();
-  function tick(){ const dt = clock.getDelta(); controls.update(); if(isAuto && modelRoot) modelRoot.rotation.y += dt*0.6; renderer.render(scene,camera); requestAnimationFrame(tick); }
-  tick();
+  // Loop
+  const clock=new THREE.Clock();
+  (function animate(){
+    const dt=clock.getDelta(); controls.update();
+    if(auto && modelRoot) modelRoot.rotation.y += dt*0.6;
+    renderer.render(scene,camera); requestAnimationFrame(animate);
+  })();
 
   // Buttons
-  $('#loadDemo').addEventListener('click', loadDemo);
-  $('#loadPlaceholder').addEventListener('click', loadPlaceholder);
+  document.getElementById('loadDemo').addEventListener('click', loadDemo);
+  document.getElementById('loadPlaceholder').addEventListener('click', loadPlaceholder);
 })();
